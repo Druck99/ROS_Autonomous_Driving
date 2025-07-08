@@ -1,0 +1,6 @@
+# Ignore compiling fiels in catkin_ws
+build/
+devel/
+logs/
+.catkin_tools/
+*.code-workspace

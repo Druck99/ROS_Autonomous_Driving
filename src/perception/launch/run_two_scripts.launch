@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="my_scripts" type="car2.py" name="car2_node" output="screen" />
+    <node pkg="my_scripts" type="test3.py" name="test3_node" output="screen" />
+</launch>

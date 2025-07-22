@@ -1,7 +1,7 @@
 from message_decoders import show_image_live, read_exact
 from message_decoders import parse_imu, parse_rgbcamera
 from message_decoders import decode_depth_rgb, visualize_depth_grayscale_fixed, parse_depthcamera
-from message_decoders import parse_truestate
+from message_decoders import parse_truestate, parse_segmentationcamera
 import numpy as np
 import cv2
 
@@ -63,8 +63,8 @@ def main():
                 parse_depthcamera(conn = conn, name = name, timestamp = ticks)
             elif type_id == UNITY_STATE:
                 parse_truestate(conn = conn, name = name, timestamp = ticks, visualize = False)
-            # elif type_id == UNITY_DETECTIONS:
-            #     parse_segmentationcamera(conn=conn, name = name, timestamp=ticks)
+            elif type_id == UNITY_DETECTIONS:
+                parse_segmentationcamera(conn=conn, name = name, timestamp=ticks)
 
     except Exception as e:
         print(f"[ERROR] {e}")

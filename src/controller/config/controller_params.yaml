@@ -1,0 +1,8 @@
+controller_node:
+  wheelbase:     1.0
+  max_steer_deg: 20.0
+  max_acc:       1.89
+  max_speed:     8.5
+  Kp_speed:      1.0
+  Kp_brake:      1.0
+  control_rate:  20.0

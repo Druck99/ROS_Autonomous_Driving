@@ -1,0 +1,53 @@
+# “obstacle_range”参数决定了引入障碍物到代价地图的传感器读数的最大范围。 
+# 在这里,我们把它设定为2.5米,这意味着机器人只会更新以其底盘为中心半径2.5米内的障碍信息。
+obstacle_range: 30
+#  “raytrace_range”参数确定的空白区域内光线追踪的范围。 
+#  设置为3.0米意味着机器人将试图根据传感器读数清除其前面3.0米远的空间。
+raytrace_range: 30
+# footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
+#robot_radius: ir_of_robot
+inflation_radius: 0.5
+
+observation_sources: point_cloud_sensor
+
+# laser_scan_sensor: {sensor_frame: frame_name, data_type: LaserScan, topic: topic_name, marking: true, clearing: true}
+
+point_cloud_sensor: {
+  sensor_frame: OurCar/Sensors/DepthCamera, 
+  data_type: PointCloud2, 
+  topic: /perception/pcl/points, 
+  marking: true, 
+  clearing: true
+}
+
+# 神
+
+# # obstacle_range 更新以机器人为中心,按此数值为半径内的障碍物信息
+# # raytrace_range 更新以机器人为中心.按此数值为半径内的自由空间
+# obstacle_range: 30
+# raytrace_range: 30
+# # footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
+# #robot_radius: 2.0
+
+# obstacle_layer:
+#   enable: True
+#   combination_method: 1
+#   track_unknown_space: True
+#   observation_sources: point_cloud_sensor
+#   point_cloud_sensor: {
+#     sensor_frame: OurCar/Sensors/DepthCamera, 
+#     data_type: PointCloud2, 
+#     topic: /perception/pcl/points, 
+#     marking: true, 
+#     clearing: true
+#   }
+
+# cost_type: costmap
+
+# inflater_layer:
+#   enabled: true
+#   inflation_radius: 0.5
+#   cost_scaling_factor: 3.0
+
+# static_layer:
+#   enabled: true

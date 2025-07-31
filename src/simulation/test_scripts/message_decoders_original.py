@@ -98,22 +98,6 @@ def parse_truestate(conn, name, timestamp, visualize = False, plot_interval = 0.
     print(f"  Angular Velocity: ({angular_velocity[0]:.2f}, {angular_velocity[1]:.2f}, {angular_velocity[2]:.2f})")
     if visualize:
         update_trajectory(position, plot_interval = plot_interval, max_length=max_length)
-def parse_segmentationcamera(conn, name, timestamp):
-    width = struct.unpack('<i', read_exact(conn, 4))[0]
-    height = struct.unpack('<i', read_exact(conn, 4))[0]
-    print(f"[SEGMENTATION] {name} @ {timestamp:.3f}s | {width}x{height}")
-
-    img_len = width * height  
-    mask_bytes = read_exact(conn, img_len)
-    mask_img = np.frombuffer(mask_bytes, dtype=np.uint8).reshape((height, width))
-    print("Unique classes in this frame:", np.unique(mask_img))
-    cv2.imshow("Segmentation", mask_img*10)  # *10让不同类别区分明显
-    cv2.waitKey(1)
-
-    # 下面可以统计红绿灯类别id的像素点数量
-    # 比如红绿灯id为10
-    num_traffic_light = np.sum(mask_img == 10)
-    print(f"Traffic light pixels: {num_traffic_light}")
 
 import matplotlib.pyplot as plt
 from collections import deque

@@ -1,0 +1,44 @@
+<launch>
+  <!-- <master auto="start"/> -->
+
+  <!-- Run the map server -->
+  <!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find my_map_package)/my_map.pgm my_map_resolution"/> -->
+
+  <!-- - Run AMCL -->
+  <include file="$(find amcl)/examples/amcl_omni.launch" />
+  
+  <!-- 启动 odometry_publisher 节点 -->
+  <node pkg="odometry_publisher"
+        type="odometry_publisher"
+        name="odometry_publisher_node"
+        output="screen">
+  </node>
+
+  <!-- 启动 Navigation -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find my_robot_name_2dnav)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot_name_2dnav)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find my_robot_name_2dnav)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot_name_2dnav)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot_name_2dnav)/base_local_planner_params.yaml" command="load" />
+    <!-- <rosparam file="$(find my_robot_name_2dnav)/global_planner_params.yaml" command="load" /> -->
+    <!-- <rosparam file="$(find my_robot_name_2dnav)/static_map_params.yaml" command="load" ns="global_costmap/static_layer" /> -->
+    <!-- <rosparam file="$(find my_robot_name_2dnav)/static_map_params.yaml" command="load" ns="local_costmap/static_layer" /> -->
+
+    <!-- <param name="base_global_planner" value="navfn/NavfnROS"/>  -->
+    <!-- <param name="planner_frequency" value="1.0" /> -->
+    <!-- <param name="planner_patience" value="5.0" /> -->
+
+    <!-- <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <param name="controller_frequency" value="15.0" />
+    <param name="controller_patience" value="15.0" /> -->
+  </node>
+
+  <!-- 启动 simple_navigation_goals 节点 -->
+  <node pkg="simple_navigation_goals"
+        type="simple_navigation_goals"
+        name="simple_navigation_goals_node"
+        output="screen">
+  </node>
+
+</launch>

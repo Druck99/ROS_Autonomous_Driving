@@ -126,7 +126,7 @@ int main(int argc, char** argv){
       ac.sendGoal(goal);
       
       // 等待机器人接近目标点（1米范围内）
-      const double proximity_threshold = 1.0; // 1米
+      const double proximity_threshold = 5.0; // 1米
       bool goal_reached = false;
       bool action_completed = false;
       

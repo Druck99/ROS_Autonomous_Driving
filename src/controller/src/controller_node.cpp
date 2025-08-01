@@ -5,6 +5,108 @@
 #include <std_msgs/Bool.h>
 #include <cmath>
 
+// class ControllerNode
+// {
+// public:
+//     ControllerNode()
+//       : nh_(""), pnh_("~"),
+//         current_speed_(0.0), des_omega_(0.0),
+//         received_desired_(false), go_command_(true)
+//     {
+//         // 参数
+//         pnh_.param("wheelbase", wheelbase_, 1.0);
+//         pnh_.param("max_steer_deg", max_steer_deg_, 20.0);
+//         pnh_.param("Kp_steer", Kp_steer_, 1.0);  // 横向P调节参数
+//         pnh_.param("control_rate", rate_hz_, 20.0);
+
+//         // 订阅期望速度
+//         sub_des_ = nh_.subscribe<geometry_msgs::Twist>(
+//             "/cmd_vel", 1, &ControllerNode::cbDesired, this);
+
+//         // 订阅决策节点的 GO/STOP 信号
+//         sub_decision_ = nh_.subscribe<std_msgs::Bool>(
+//             "/ssc", 1, &ControllerNode::cbDecision, this);
+
+//         // 发布控制命令
+//         pub_ctrl_ = nh_.advertise<simulation::VehicleControl>("car_command", 1);
+//     }
+
+//     void spin()
+//     {
+//         ros::Rate rate(rate_hz_);
+//         while (ros::ok())
+//         {
+//             simulation::VehicleControl cmd;
+
+//             // —— 优先响应决策节点 —— 
+//             // if (!go_command_)
+//             // {
+//             //     // 红灯或紧急停车：立即全刹车
+//             //     cmd.Throttle = 0.0f;
+//             //     cmd.Brake    = 1.0f;    // 最大制动
+//             //     cmd.Steering = 0.0f;
+//             // }
+//             // else
+//             {
+//                 // 只用固定油门（纵向保持0.5f），横向只调节Steering
+//                 cmd.Throttle = 0.3f;
+//                 cmd.Brake    = 0.0f;
+
+//                 // —— 横向控制（只用/cmd_vel的角速度）——
+//                 double steer_rad = 0.0;
+//                 if (received_desired_) {
+//                     // Ackermann公式：delta = atan(L * omega / v)，
+//                     // 但速度固定，直接用 P 控制实现角速度到转向角
+//                     steer_rad = Kp_steer_ * des_omega_;
+//                 }
+//                 // 限制角度，并归一化到[-1,1]
+//                 double max_rad = max_steer_deg_ * M_PI / 180.0;
+//                 steer_rad = std::max(-max_rad, std::min(max_rad, steer_rad));
+//                 cmd.Steering = float(-steer_rad / max_rad);
+//             }
+
+//             cmd.Reserved = 0.0f;
+//             pub_ctrl_.publish(cmd);
+
+//             ros::spinOnce();
+//             rate.sleep();
+//         }
+//     }
+
+// private:
+//     // 只读取角速度
+//     void cbDesired(const geometry_msgs::Twist::ConstPtr& msg)
+//     {
+//         des_omega_ = msg->angular.z;
+//         received_desired_ = true;
+//     }
+
+//     // 决策节点回调：GO==true 继续行驶，false 刹车
+//     void cbDecision(const std_msgs::Bool::ConstPtr& msg)
+//     {
+//         go_command_ = msg->data;
+//     }
+
+//     ros::NodeHandle nh_, pnh_;
+//     ros::Subscriber sub_des_, sub_decision_;
+//     ros::Publisher  pub_ctrl_;
+
+//     double current_speed_, des_omega_;
+//     bool   received_desired_, go_command_;
+
+//     double wheelbase_, max_steer_deg_;
+//     double Kp_steer_, rate_hz_;
+// };
+
+// int main(int argc, char** argv)
+// {
+//     ros::init(argc, argv, "controller_node");
+//     ControllerNode node;
+//     node.spin();
+//     return 0;
+// }
+
+
 class ControllerNode
 {
 public:
@@ -29,9 +131,9 @@ public:
         sub_state_ = nh_.subscribe<geometry_msgs::TwistStamped>(
             "/Unity_ROS_message_Rx/OurCar/CoM/twist", 1,
             &ControllerNode::cbState, this);
-        // 订阅决策节点的 GO/STOP 信号**
-        sub_decision_ = nh_.subscribe<std_msgs::Bool>(
-            "/ssc", 1, &ControllerNode::cbDecision, this);
+        // // 订阅决策节点的 GO/STOP 信号**
+        // sub_decision_ = nh_.subscribe<std_msgs::Bool>(
+        //     "/ssc", 1, &ControllerNode::cbDecision, this);
 
         // 发布控制命令
         pub_ctrl_ = nh_.advertise<simulation::VehicleControl>("car_command", 1);
@@ -45,14 +147,15 @@ public:
             simulation::VehicleControl cmd;
 
             // —— 优先响应决策节点 —— 
-            if (!go_command_)
-            {
-                // 红灯或紧急停车：立即全刹车
-                cmd.Throttle = 0.0f;
-                cmd.Brake    = 1.0f;    // 最大制动
-                cmd.Steering = 0.0f;
-            }
-            else if (!received_desired_)
+            // if (!go_command_)
+            // {
+            //     // 红灯或紧急停车：立即全刹车
+            //     cmd.Throttle = 0.0f;
+            //     cmd.Brake    = 1.0f;    // 最大制动
+            //     cmd.Steering = 0.0f;
+            // }
+            // else 
+            if (!received_desired_)
             {
                 // 启动时未收到规划器命令，保持初始油门驱动
                 cmd.Throttle = 0.5f;
@@ -80,7 +183,7 @@ public:
                 }
                 double max_rad = max_steer_deg_ * M_PI / 180.0;
                 steer_rad = std::max(-max_rad, std::min(max_rad, steer_rad));
-                cmd.Steering = float(steer_rad / max_rad);
+                cmd.Steering = float(-steer_rad / max_rad);
             }
 
             cmd.Reserved = 0.0f;
@@ -108,11 +211,11 @@ private:
     }
 
     // **决策节点回调：GO==true 继续行驶，false 刹车**
-    void cbDecision(const std_msgs::Bool::ConstPtr& msg)
-    {
-        go_command_ = msg->data;
-        // ROS_INFO_STREAM("Decision command: " << (go_command_ ? "GO" : "STOP"));
-    }
+    // void cbDecision(const std_msgs::Bool::ConstPtr& msg)
+    // {
+    //     go_command_ = msg->data;
+    //     // ROS_INFO_STREAM("Decision command: " << (go_command_ ? "GO" : "STOP"));
+    // }
 
     ros::NodeHandle nh_, pnh_;
     ros::Subscriber sub_des_, sub_state_, sub_decision_;

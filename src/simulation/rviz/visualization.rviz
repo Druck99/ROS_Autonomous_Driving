@@ -10,6 +10,7 @@ Panels:
         - /RGB_Left2
         - /Segmentation Camera1
         - /Traffic Light1
+        - /Octomap_3D1
         - /Depth Camera2
         - /Map1
       Splitter Ratio: 0.5403376817703247
@@ -249,7 +250,7 @@ Visualization Manager:
       Max. Octree Depth: 16
       Min. Height Display: -3.4028234663852886e+38
       Name: Octomap_3D
-      Octomap Topic: /perception/octomap/octomap_binary
+      Octomap Topic: /octomap_full
       Queue Size: 5
       Value: false
       Voxel Alpha: 1
@@ -392,7 +393,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 232.69711303710938
+      Distance: 179.08245849609375
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -400,9 +401,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -39.01591873168945
-        Y: -50.62031936645508
-        Z: 4.271408557891846
+        X: 26.970745086669922
+        Y: 14.176935195922852
+        Z: 4.336280345916748
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -410,7 +411,7 @@ Visualization Manager:
       Near Clip Distance: 0.009999999776482582
       Pitch: 1.5697963237762451
       Target Frame: OurCar/Center
-      Yaw: 4.71000862121582
+      Yaw: 4.71182918548584
     Saved:
       - Class: rviz/Orbit
         Distance: 24.759632110595703

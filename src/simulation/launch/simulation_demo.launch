@@ -31,8 +31,17 @@
             args="load depth_image_proc/point_cloud_xyz nodelet_manager">
             <remap from="camera_info" to="/Unity_ROS_message_Rx/OurCar/Sensors/DepthCamera/camera_info"/>
             <remap from="image_rect" to="/Unity_ROS_message_Rx/OurCar/Sensors/DepthCamera/image_raw"/>
-            <remap from="points" to="/perception/pcl/points"/>
+            <remap from="points" to="/perception/pcl/points_raw"/>
       </node>
+
+      <node pkg="nodelet" type="nodelet" name="yfilter" args="standalone pcl/PassThrough">
+            <remap from="~input" to="/perception/pcl/points_raw"/>
+            <remap from="~output" to="/perception/pcl/points"/>
+            <param name="filter_field_name" value="y"/>
+            <param name="filter_limit_min" value="-5"/>
+            <param name="filter_limit_max" value="10"/>
+      </node>
+
 
       <!-- ====== 这里加 Octomap 节点 ====== -->
       <node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen">

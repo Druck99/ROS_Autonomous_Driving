@@ -1,7 +1,7 @@
 global_costmap:
   global_frame: world
   robot_base_frame: OurCar/INS
-  update_frequency: 1.0
+  update_frequency: 2.0
   static_map: true
   # 新增
   map_topic: /projected_map

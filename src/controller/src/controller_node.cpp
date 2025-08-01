@@ -111,7 +111,7 @@ private:
     void cbDecision(const std_msgs::Bool::ConstPtr& msg)
     {
         go_command_ = msg->data;
-        ROS_INFO_STREAM("🔁 Decision command: " << (go_command_ ? "GO" : "STOP"));
+        // ROS_INFO_STREAM("Decision command: " << (go_command_ ? "GO" : "STOP"));
     }
 
     ros::NodeHandle nh_, pnh_;

@@ -39,7 +39,7 @@
         <remap from="cloud_in" to="/perception/pcl/points"/>
         <!-- <param name="frame_id" value="OurCar/Center"/> -->
         <param name="frame_id" value="world"/>
-        <param name="resolution" value="0.5"/>
+        <param name="resolution" value="0.7"/>
         <param name="latch" value="true"/>
         <!-- 可选参数：
         <param name="resolution" value="0.5"/>

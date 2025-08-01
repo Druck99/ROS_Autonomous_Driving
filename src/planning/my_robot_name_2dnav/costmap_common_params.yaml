@@ -4,8 +4,8 @@ obstacle_range: 30
 #  “raytrace_range”参数确定的空白区域内光线追踪的范围。 
 #  设置为3.0米意味着机器人将试图根据传感器读数清除其前面3.0米远的空间。
 raytrace_range: 30
-# footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
-#robot_radius: ir_of_robot
+footprint: [[2.5, -1], [-2.5, -1], [-2.5, 1],[2.5, 1]]
+# robot_radius: 1
 inflation_radius: 0.5
 
 observation_sources: point_cloud_sensor

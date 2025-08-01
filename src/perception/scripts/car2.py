@@ -35,7 +35,7 @@ class CarDetector:
         # 首次运行时打印语义图像所有颜色
         if self.first_run:
             unique_colors = np.unique(sem_img.reshape(-1, 3), axis=0)
-            rospy.loginfo(f"[DEBUG] Unique semantic colors: {unique_colors}")
+            # rospy.loginfo(f"[DEBUG] Unique semantic colors: {unique_colors}")
             self.first_run = False
 
         sem_h, sem_w = sem_img.shape[:2]
@@ -48,8 +48,8 @@ class CarDetector:
         car_upper = np.array([60, 60, 255], dtype=np.uint8)
         mask = cv2.inRange(sem_img, car_lower, car_upper)
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        rospy.loginfo(f"Contours found: {len(contours)}")
-        rospy.loginfo(f"Red pixel count in mask: {np.sum(mask>0)}")
+        # rospy.loginfo(f"Contours found: {len(contours)}")
+        # rospy.loginfo(f"Red pixel count in mask: {np.sum(mask>0)}")
 
         car_distances = []
 
@@ -68,7 +68,7 @@ class CarDetector:
 
             # 框出所有车辆（黄色框，BGR格式）
             cv2.rectangle(rgb_vis, (rx1, ry1), (rx2, ry2), (0, 255, 255), 2)
-            rospy.loginfo(f"Car id={idx} at ({rx1},{ry1},{rx2-rx1},{ry2-ry1}), orig_bbox=({x},{y},{w},{h})")
+            # rospy.loginfo(f"Car id={idx} at ({rx1},{ry1},{rx2-rx1},{ry2-ry1}), orig_bbox=({x},{y},{w},{h})")
 
             # ==============================
             # 输出深度信息（支持多类型/单位自动识别和转换为米）
@@ -98,7 +98,7 @@ class CarDetector:
                     distance = float(np.median(valid_depth)) * scale
                     car_distances.append(distance)
                     cv2.putText(rgb_vis, f"{distance:.2f}m", (rx1, ry1-7), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 255), 2)
-                    rospy.loginfo(f"Car id={idx} 距离: {distance:.2f} 米")
+                    # rospy.loginfo(f"Car id={idx} 距离: {distance:.2f} 米")
                 else:
                     rospy.loginfo(f"Car id={idx} 该区域无有效深度值")
             else:
@@ -109,7 +109,7 @@ class CarDetector:
         dist_msg = Float32MultiArray()
         dist_msg.data = car_distances
         self.dist_pub.publish(dist_msg)
-        rospy.loginfo(f"已发布 {len(car_distances)} 个车辆距离: {car_distances}")
+        # rospy.loginfo(f"已发布 {len(car_distances)} 个车辆距离: {car_distances}")
 
         # 发布可视化图像
         try:

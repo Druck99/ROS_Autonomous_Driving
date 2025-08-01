@@ -76,7 +76,7 @@ class TrafficLightColorDetector:
             n_green = np.sum(is_green)
             # ----------------------------------
 
-            rospy.loginfo(f"ROI #{idx}: n_red={n_red}, n_green={n_green}")
+            # rospy.loginfo(f"ROI #{idx}: n_red={n_red}, n_green={n_green}")
 
             if n_green > 0:
                 any_green = True
@@ -103,7 +103,7 @@ class TrafficLightColorDetector:
             status = -1
 
         self.pub.publish(Int32(status))
-        rospy.loginfo(f"[Traffic Light Status]: {status}")
+        # rospy.loginfo(f"[Traffic Light Status]: {status}")
 
         try:
             vis_msg = self.bridge.cv2_to_imgmsg(rgb_vis, encoding="rgb8")

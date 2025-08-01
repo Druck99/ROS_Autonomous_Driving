@@ -34,48 +34,48 @@ class DecisionMaker:
     def on_traffic_light(self, msg):
         if msg.data == 1:
             self.traffic_light_is_green = True
-            rospy.loginfo("🚦 Traffic light detected: GREEN")
+            # rospy.loginfo("🚦 Traffic light detected: GREEN")
         elif msg.data == 0:
             self.traffic_light_is_green = False
-            rospy.loginfo("🚦 Traffic light detected: RED")
+            # rospy.loginfo("🚦 Traffic light detected: RED")
         elif msg.data == -1:
-            self.traffic_light_is_green = True  # ✅ 未检测到信号灯时，默认允许前行
-            rospy.logwarn("⚠️ No traffic light detected, assuming GREEN (continue driving)")
+            self.traffic_light_is_green = True  # 默认允许前行
+            # rospy.logwarn("⚠️ No traffic light detected, assuming GREEN (continue driving)")
 
     def on_car_distances(self, msg):
         if msg.data:
             self.nearest_car_distance = min(msg.data)
             self.emergency = (self.nearest_car_distance < self.emergency_distance_threshold)
-            rospy.loginfo(f"🚗 Nearest car distance: {self.nearest_car_distance:.2f}m | Emergency: {self.emergency}")
+            # rospy.loginfo(f"🚗 Nearest car distance: {self.nearest_car_distance:.2f}m | Emergency: {self.emergency}")
         else:
             self.nearest_car_distance = float('inf')
             self.emergency = False
-            rospy.loginfo("🚗 No cars detected, Emergency: False")
+            # rospy.loginfo("🚗 No cars detected, Emergency: False")
 
     def on_odom(self, msg):
         self.car_x = msg.pose.pose.position.x
-        rospy.loginfo_throttle(1, f"📍 Current position: x = {self.car_x:.2f}")
+        # rospy.loginfo_throttle(1, f"📍 Current position: x = {self.car_x:.2f}")
 
     def evaluate(self, event):
         start = True
 
         if self.car_x >= self.goal_x:
-            rospy.loginfo("🏁 Goal reached, stopping")
+            # rospy.loginfo("🏁 Goal reached, stopping")
             start = False
 
         elif self.emergency:
-            rospy.loginfo("🚨 Emergency brake triggered, stopping")
+            # rospy.loginfo("🚨 Emergency brake triggered, stopping")
             start = False
 
         elif not self.traffic_light_is_green:
-            rospy.loginfo("🔴 Red light detected, stopping")
+            # rospy.loginfo("🔴 Red light detected, stopping")
             start = False
 
         else:
-            rospy.loginfo("🟢 Green light or no traffic light detected — keep driving")
+            # rospy.loginfo("🟢 Green light or no traffic light detected — keep driving")
             start = True
 
-        rospy.loginfo(f"📤 Decision: {'GO' if start else 'STOP'}\n---")
+        # rospy.loginfo(f"📤 Decision: {'GO' if start else 'STOP'}\n---")
         self.cmd_pub.publish(start)
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ All project requirements have been successfully fulfilled:
 | Perception – Distance to vehicles        | Enze Wang    | Yes, `cv_bridge`, `message_filters`       |
 | State machine                         | Yicun Song          | No                       |
 | Global planner                        | Jiaxiang Yang           | Yes, `move_base`         |
-| Local planner                         | Jiaxiang Yang    | Yes, `TebLocalPlanner`   |
+| Local planner                         | Jiaxiang Yang    | NO   |
 | Controller                            | Qianke Ye    | No                       |
 
 
@@ -58,7 +58,8 @@ Assume you already have `ros-noetic-desktop-full` installed.
    ros-noetic-octomap-server \
    ros-noetic-navigation \
    ros-noetic-octomap-rviz-plugins \
-   ros-noetic-teb-local-planner
+   ros-noetic-teb-local-planner \
+   ros-noetic-tf2-geometry-msgs
 2. Build the project using `catkin build` under your `catkin_ws` directory:
 
    ```bash
@@ -79,12 +80,12 @@ Assume you already have `ros-noetic-desktop-full` installed.
    ```
 
 > 📌 ROS graph after successful build:
-> ![rosgraph](your_rosgraph_image_path_here)
+> ![rqtgraph](rqtgraph.png)
 
 
-## Support
+<!-- ## Support
 
-For further questions, feel free to contact us at: **jiaxiang.yang@tum.de**
+For further questions, feel free to contact us at: **jiaxiang.yang@tum.de** -->
 
 ---
 

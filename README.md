@@ -18,7 +18,7 @@ All project requirements have been successfully fulfilled:
 - ✅ Accurate **vehicle detection and avoidance**  
 - ✅ **Traffic light recognition** and compliant stopping/starting behavior  
 - ✅ **Distance estimation** to both vehicles and traffic lights  
-- ✅ Total completion time: ~400s  
+- ✅ Total completion time: ~15min  
 - ✅ All modules integrated and verified in a simulated urban environment
 
 ## Team Contributions
